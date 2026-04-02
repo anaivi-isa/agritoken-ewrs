@@ -18,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getReceiptById, type TokenMetadata } from '@/lib/mock-blockchain';
 import { formatNaira, formatDate } from '@/lib/utils';
+import { ReceiptQRCode } from '@/components/ui/receipt-qr-code';
 
 export default function ReceiptPage() {
   const { id } = useParams<{ id: string }>();
@@ -130,6 +131,9 @@ export default function ReceiptPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* QR Code */}
+        <ReceiptQRCode tokenId={receipt.token_id} size="full" />
 
         {/* Commodity details */}
         <Card>

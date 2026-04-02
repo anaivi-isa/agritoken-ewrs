@@ -20,6 +20,7 @@ import { Badge } from '@/components/ui/badge';
 import { getFarmerSession, clearFarmerSession } from '@/lib/store';
 import { getReceiptsByFarmer, type TokenMetadata } from '@/lib/mock-blockchain';
 import { formatNaira, formatDate } from '@/lib/utils';
+import { ReceiptQRCode } from '@/components/ui/receipt-qr-code';
 
 export default function FarmerDashboardPage() {
   const router = useRouter();
@@ -164,7 +165,8 @@ export default function FarmerDashboardPage() {
               {receipts.map((receipt) => (
                 <Card key={receipt.token_id} className="hover:shadow-md transition-shadow">
                   <CardContent className="pt-5 pb-5">
-                    <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-4">
+                      <ReceiptQRCode tokenId={receipt.token_id} size="mini" />
                       <div className="space-y-1 flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="font-semibold">
