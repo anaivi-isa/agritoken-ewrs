@@ -8,7 +8,6 @@ const phases = [
     date: 'Q3 2026',
     title: 'Digital Registry',
     dotColor: 'bg-brand-primary',
-    borderColor: 'border-brand-primary',
     badgeBg: 'bg-brand-light',
     badgeText: 'text-brand-primary',
     description:
@@ -20,7 +19,6 @@ const phases = [
     date: 'Q1 2027',
     title: 'Secondary Market',
     dotColor: 'bg-brand-earth',
-    borderColor: 'border-brand-earth',
     badgeBg: 'bg-brand-sand',
     badgeText: 'text-brand-earth',
     description:
@@ -32,7 +30,6 @@ const phases = [
     date: 'Q3 2027',
     title: 'Export Linkage',
     dotColor: 'bg-brand-dark',
-    borderColor: 'border-brand-dark',
     badgeBg: 'bg-brand-light/40',
     badgeText: 'text-brand-dark',
     description:
@@ -70,7 +67,7 @@ export function LandingRoadmap() {
                   </div>
                 </div>
 
-                <div className={`flex-1 border-l-4 ${p.borderColor} bg-brand-cream rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow`}>
+                <div className="flex-1 bg-brand-cream rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex flex-wrap items-center gap-3 mb-3">
                     <span className={`text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-full ${p.badgeBg} ${p.badgeText}`}>
                       {p.phase}
