@@ -42,6 +42,14 @@ const config: Config = {
           'earth-light': '#d97706',
           gold: '#ca8a04',
         },
+        brand: {
+          primary: '#15803d',
+          dark: '#052e16',
+          light: '#bbf7d0',
+          cream: '#f7f3eb',
+          earth: '#78350f',
+          sand: '#fef9e7',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

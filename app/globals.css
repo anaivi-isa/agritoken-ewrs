@@ -57,3 +57,14 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Landing page scroll-reveal animation */
+.section-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+}
+.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.65s ease-out, transform 0.65s ease-out;
+}
