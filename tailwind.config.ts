@@ -70,11 +70,16 @@ const config: Config = {
           '60%': { transform: 'scale(1.05)' },
           '100%': { transform: 'scale(1)', opacity: '1' },
         },
+        'ticker-scroll': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
       },
       animation: {
         'fade-in': 'fade-in 0.3s ease-out',
         'pulse-green': 'pulse-green 2s infinite',
         'bounce-in': 'bounce-in 0.4s ease-out',
+        'ticker-scroll': 'ticker-scroll 40s linear infinite',
       },
     },
   },

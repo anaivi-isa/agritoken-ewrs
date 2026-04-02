@@ -21,12 +21,14 @@ import { getFarmerSession, clearFarmerSession } from '@/lib/store';
 import { getReceiptsByFarmer, type TokenMetadata } from '@/lib/mock-blockchain';
 import { formatNaira, formatDate } from '@/lib/utils';
 import { ReceiptQRCode } from '@/components/ui/receipt-qr-code';
+import { useCommodityPrices } from '@/lib/use-commodity-prices';
 
 export default function FarmerDashboardPage() {
   const router = useRouter();
   const [session, setSession] = useState(getFarmerSession());
   const [receipts, setReceipts] = useState<TokenMetadata[]>([]);
   const [totalValue, setTotalValue] = useState(0);
+  const { prices: ncxPrices, loading: pricesLoading } = useCommodityPrices();
 
   useEffect(() => {
     if (!session) {
@@ -221,31 +223,61 @@ export default function FarmerDashboardPage() {
           )}
         </div>
 
-        {/* Trends placeholder */}
-        {receipts.length > 0 && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
-                <TrendingUp className="w-4 h-4" />
-                Market Prices (Simulated)
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-3 gap-4 text-center">
-                {[
-                  { label: 'Maize Grade A', price: '₦900/kg' },
-                  { label: 'Maize Grade B', price: '₦750/kg' },
-                  { label: 'Rice Grade A', price: '₦900/kg' },
-                ].map((item) => (
-                  <div key={item.label} className="rounded-lg bg-muted p-3">
-                    <p className="text-xs text-muted-foreground">{item.label}</p>
-                    <p className="font-semibold text-sm mt-1">{item.price}</p>
+        {/* Live NCX Market Prices */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base flex items-center gap-2">
+              <TrendingUp className="w-4 h-4" />
+              NCX Live Market Prices
+              <span className="ml-auto flex items-center gap-1.5 text-xs font-normal text-muted-foreground">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-green-400" />
+                </span>
+                ncx.com.ng
+              </span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {pricesLoading ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="rounded-lg bg-muted p-3 animate-pulse">
+                    <div className="h-3 w-20 bg-muted-foreground/20 rounded mb-2" />
+                    <div className="h-4 w-16 bg-muted-foreground/20 rounded" />
                   </div>
                 ))}
               </div>
-            </CardContent>
-          </Card>
-        )}
+            ) : ncxPrices.length === 0 ? (
+              <p className="text-sm text-muted-foreground text-center py-4">
+                Market data unavailable — check back shortly.
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                {ncxPrices.map((p) => (
+                  <div key={p.code} className="rounded-lg border bg-card p-3 hover:shadow-sm transition-shadow">
+                    <p className="text-xs text-muted-foreground truncate font-medium">{p.name}</p>
+                    {p.location && (
+                      <p className="text-xs text-muted-foreground/60 mb-1">{p.location}</p>
+                    )}
+                    <p className="font-bold text-sm text-primary mt-1">
+                      ₦{p.price_ngn.toLocaleString()}<span className="text-muted-foreground font-normal text-xs">/kg</span>
+                    </p>
+                    <p className={`text-xs font-semibold mt-0.5 ${
+                      p.change_pct > 0 ? 'text-green-600' : p.change_pct < 0 ? 'text-red-500' : 'text-muted-foreground'
+                    }`}>
+                      {p.change_pct > 0 ? '▲' : p.change_pct < 0 ? '▼' : '–'}{' '}
+                      {p.change_pct !== 0 ? `${Math.abs(p.change_pct).toFixed(1)}%` : 'Unchanged'}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground/50 mt-4 text-right">
+              Sourced via TinyFish · refreshes every 5 min
+            </p>
+          </CardContent>
+        </Card>
       </main>
     </div>
   );
